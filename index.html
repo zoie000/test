@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>4.1</title>
+    <style>
+        /* 全局重置：清除所有默认边距，确保完美居中 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* 使用视口高度100%，确保垂直方向充满全屏 */
+            min-height: 100vh;
+            /* 弹性布局实现终极居中 (水平+垂直) */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* 优雅的背景：微暖的米白渐变，让粉色字体更加温柔突出 */
+            background: linear-gradient(145deg, #fff9f5 0%, #ffeef4 100%);
+            /* 保证背景覆盖无重复 */
+            background-attachment: fixed;
+            /* 字体平滑渲染 */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            /* 设置默认内边距，防止超小屏幕边缘贴边 (不影响居中逻辑) */
+            padding: 1rem;
+        }
+
+        /* 核心文字容器：负责承载七个大字的展示 */
+        .hero-text {
+            /* 块级元素便于设置文字样式和交互 */
+            display: inline-block;
+            /* 保证在flex容器内自动适应内容宽度，且不超出视口安全区 */
+            max-width: 100%;
+            /* 文本自动换行处理，但七个字尽量保持一行，超小屏幕会略微缩放保证完整 */
+            word-break: keep-all;
+            text-align: center;
+            /* 添加细腻的过渡效果，提升交互感 (非必需但愉悦) */
+            transition: transform 0.25s ease, text-shadow 0.3s ease;
+            /* 微妙的悬停轻微抬起，让字体更有生命力 */
+        }
+
+        /* 主要大字样式：粉色 + 大尺寸 + 醒目 */
+        .hero-text h1 {
+            /* 粉色字体核心：明亮、温柔、高饱和度的粉红色，符合“粉色字体”需求 */
+            color: #ff69b4;          /* 热粉色 HotPink，经典明亮 */
+            /* 备选增强：使用渐变色粉，但依旧保证纯粉色系，如果浏览器支持也可叠加，但保持主色为粉 */
+            /* 增加文本阴影让粉色更有立体感，但不会改变粉色的本质 */
+            text-shadow: 2px 2px 12px rgba(255, 105, 180, 0.25);
+            /* 字体大小：桌面端使用大号醒目尺寸，移动端用视口单位适配，保证一行完整显示七个字 */
+            font-size: clamp(3rem, 12vw, 6.5rem);
+            /* 字重：粗体展现“大字”气势 */
+            font-weight: 900;
+            /* 字体家族：优先使用现代圆润中文字体，兼顾美观和阅读 */
+            font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", "Segoe UI", "Noto Sans CJK SC", Roboto, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            /* 字母间距略微增加，让七个字更有呼吸感 */
+            letter-spacing: 0.02em;
+            /* 保证文字不溢出，自动换行时依然居中（极少情况） */
+            line-height: 1.2;
+            /* 增加内边距让触摸区域更舒适 */
+            padding: 0.2em 0.1em;
+            /* 白色背景的柔和光晕效果增强可读性，可选但让粉色更突出 */
+            background: radial-gradient(ellipse at center, rgba(255,245,250,0.4) 0%, rgba(255,235,245,0) 80%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            /* 注意：background-clip: text 会和 color 冲突，为了让粉色纯色为主，不实际clip，去掉保留纯色 */
+            /* 修正：上面背景不影响文字颜色，因未设置text-fill-color，故去掉该行，保证纯粉色 */
+        }
+
+        /* 重设：移除可能导致颜色异常的clip，确保粉色纯色显示 */
+        .hero-text h1 {
+            background: none;
+            -webkit-background-clip: unset;
+            background-clip: unset;
+        }
+
+        /* 增加优雅的鼠标悬浮效果：轻微放大 + 阴影增强，让交互更有趣，但不影响核心内容居中 */
+        .hero-text:hover {
+            transform: scale(1.02);
+        }
+        .hero-text:hover h1 {
+            text-shadow: 4px 4px 20px rgba(255, 105, 180, 0.45);
+            transition: text-shadow 0.2s ease;
+        }
+
+        /* 超小屏幕（宽度低于380px）微调字体，确保七个字完整一行且舒服 */
+        @media (max-width: 420px) {
+            .hero-text h1 {
+                font-size: clamp(2.2rem, 9vw, 3.6rem);
+                /* 确保七个字不换行，用white-space控制，但中文默认不断词 */
+                white-space: nowrap;
+            }
+            body {
+                /* 避免极端超小屏padding影响 */
+                padding: 0.5rem;
+            }
+        }
+
+        /* 对于特别大的屏幕，限制最大字体，避免过于夸张，保持优雅 */
+        @media (min-width: 1600px) {
+            .hero-text h1 {
+                font-size: 7rem;
+            }
+        }
+
+        /* 可选：增加一个极简的装饰圈（无干扰，让视觉重心更集中） 
+           这里不加复杂元素，保证百分百正中央只有七个粉色大字 */
+        
+        /* 为提升体验，添加一个极简的聚焦光晕背景动画，但不干扰文字和居中，属于氛围装饰 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;  /* 确保不影响点击和文字区域 */
+            background: radial-gradient(circle at 50% 50%, rgba(255,200,220,0.15) 0%, rgba(255,245,250,0) 70%);
+            z-index: -1;
+        }
+        
+        /* 保证任何情况下，flex垂直居中不受影响，完美符合“正中间” */
+        /* 辅助增强：如果内容因某些原因偏移，确保body高度完整 */
+        html {
+            height: 100%;
+        }
+        body {
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- 正中央区域：展示七个粉色大字 -->
+    <div class="hero-text">
+        <!-- 七个大字：粉色字体七个字  完全符合需求中“七个大字”且本身就是粉色主题，直观且有趣 -->
+        <h1>lmx是坏蛋！</h1>
+    </div>
+    <!-- 
+        说明： 
+        1. 屏幕正中央显示七个大字：“粉色字体七个字”，七个汉字，颜色粉色 (#ff69b4 明亮粉)。
+        2. 采用flex水平垂直居中，完美适应各种屏幕。
+        3. 字体大小响应式，手机/平板/桌面都清晰醒目，并保证七字单行完整（极端小屏也会单行）。
+        4. 额外增加了轻微悬浮动效和柔和背景，增强体验但完全不影响核心“居中粉色七个字”的需求。
+        5. 如需修改文字，可直接替换h1标签内的内容，确保七个汉字即可保持最佳视觉效果。
+    -->
+</body>
+</html>
